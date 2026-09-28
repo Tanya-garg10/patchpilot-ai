@@ -8,9 +8,7 @@ PatchPilot is an AI-powered developer workflow platform that improves the debugg
 BUG REPORT → REPRODUCE → ANALYZE → FIX → TEST → VERIFY
 ```
 
-> Built with IBM Bob IDE for the IBM Bob 2.0 Hackathon.
-
----
+> Built with IBM Bob IDE 
 
 ## Problem
 
@@ -29,8 +27,6 @@ PatchPilot keeps the entire debug lifecycle in one place:
 
 Humans remain in control. Every AI suggestion requires developer review before being applied.
 
----
-
 ## Features
 
 - **Dashboard** — Workflow pipeline visualization and session metrics
@@ -43,8 +39,6 @@ Humans remain in control. Every AI suggestion requires developer review before b
 - **PR Summary** — Auto-generated pull request description from session data
 - **Activity Timeline** — Full audit trail of debug lifecycle events
 - **ShopStack Demo** — Ready-to-run demonstration with a real reproducible cart bug
-
----
 
 ## Architecture
 
@@ -62,8 +56,6 @@ Next.js 16 App Router
     └── run-demo.ts       Demo seeder
 ```
 
----
-
 ## Tech Stack
 
 | Layer | Technology |
@@ -75,8 +67,6 @@ Next.js 16 App Router
 | State | Browser localStorage |
 | Build | Turbopack (dev) |
 
----
-
 ## ShopStack Demo
 
 ShopStack is a small e-commerce cart service included as the demo application. It contains **one intentional, reproducible bug**:
@@ -86,8 +76,6 @@ ShopStack is a small e-commerce cart service included as the demo application. I
 **Files:** `shopstack-demo/src/cart/cartService.js` (bug), `shopstack-demo/tests/cart.test.js`
 
 The DemoProvider delivers deterministic analysis and fix generation for this exact bug, demonstrating the full PatchPilot workflow without requiring a real AI backend.
-
----
 
 ## Setup
 
@@ -119,8 +107,6 @@ npm run build
 npm start
 ```
 
----
-
 ## Environment Variables
 
 Create `.env.local` for AI provider configuration (optional — demo works without it):
@@ -138,8 +124,6 @@ AI_PROVIDER=demo
 
 > **Never commit `.env.local` to source control.**
 
----
-
 ## Testing
 
 The ShopStack demo includes Jest test scenarios. To run them (requires Jest):
@@ -153,25 +137,9 @@ npx jest tests/cart.test.js
 
 Note: The tests will **fail** on the original buggy code (as designed) and **pass** after the fix is applied.
 
----
-
 ## IBM Bob Usage
 
 IBM Bob IDE was the primary development environment for PatchPilot. See [docs/IBM_BOB_USAGE.md](docs/IBM_BOB_USAGE.md) for a detailed breakdown of how Bob contributed to each area of the project.
-
-## Bob Session Evidence
-
-Task Session Summary screenshots from IBM Bob IDE are stored in:
-
-```
-bob_sessions/
-```
-
-See [bob_sessions/README.md](bob_sessions/README.md) for instructions on how to capture and name these screenshots.
-
-> **Important:** No session evidence has been fabricated. All screenshots must be captured directly from IBM Bob IDE.
-
----
 
 ## Demo Instructions
 
@@ -183,8 +151,6 @@ See [docs/DEMO.md](docs/DEMO.md) for the complete 3-minute demo walkthrough.
 3. Click **"Run Demo"**
 4. Follow the workflow: Analyze → Fix → Test → Verify
 
----
-
 ## Known Limitations
 
 - **No real AI backend** — The current implementation uses the DemoProvider with deterministic responses for ShopStack only. An external AI provider can be integrated by implementing `ExternalAIProvider` in `lib/ai-provider.ts`.
@@ -192,8 +158,6 @@ See [docs/DEMO.md](docs/DEMO.md) for the complete 3-minute demo walkthrough.
 - **Demo scope** — Root cause analysis and fix generation are only fully demonstrated for the ShopStack cart bug. Other sessions use placeholder responses.
 - **No real test execution** — Test cases are simulated. Real execution would require a test runner integration.
 - **No git integration** — The "Apply Fix" action updates local state only. Real git operations are not performed.
-
----
 
 ## Future Improvements
 
@@ -205,12 +169,6 @@ See [docs/DEMO.md](docs/DEMO.md) for the complete 3-minute demo walkthrough.
 - [ ] Collaborative sessions (multiple developers)
 - [ ] Metrics export and historical trend analysis
 
----
-
 ## API Reference
 
 See [docs/API.md](docs/API.md) for the full API reference.
-
----
-
-*PatchPilot — IBM Bob 2.0 Hackathon*
