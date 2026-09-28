@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import TestLabContent from './page-content';
+import TestLabContent from './TestLabClient';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function TestLabPage() {

@@ -122,24 +122,73 @@ ${passedTests.length === tests.length && tests.length > 0
   ];
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" icon={<ArrowLeft size={14} />} onClick={() => router.push(`/sessions/${id}`)}>
-          Back to Session
-        </Button>
-      </div>
-
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>Verification</h1>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>{session.title}</p>
-        </div>
+    <div className="p-5 max-w-4xl mx-auto space-y-5 animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className={`text-sm font-semibold ${verificationStatusColor(vStatus)}`}>
+          <Button variant="ghost" size="sm" icon={<ArrowLeft size={12} />} onClick={() => router.push(`/sessions/${id}`)}>
+            Back to Session
+          </Button>
+          <div>
+            <div className="label-mono" style={{ fontSize: 9, marginBottom: 2 }}>VERIFICATION</div>
+            <h1 className="font-bold tracking-tight" style={{ fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+              Verification
+            </h1>
+          </div>
+        </div>
+        <div
+          className="flex items-center gap-2 px-4 py-2 rounded-md"
+          style={{
+            background: vStatus === 'verified' ? 'rgba(34,197,94,0.08)' : 'var(--bg-elevated)',
+            border: `1px solid ${vStatus === 'verified' ? 'rgba(34,197,94,0.3)' : 'var(--border)'}`,
+          }}
+        >
+          {vStatus === 'verified' && <CheckCircle size={14} style={{ color: '#22c55e' }} />}
+          <span className={`font-semibold ${verificationStatusColor(vStatus)}`} style={{ fontSize: 13 }}>
             {verificationStatusLabel(vStatus)}
           </span>
         </div>
       </div>
+
+      {/* Big verification state — shown when verified */}
+      {vStatus === 'verified' && (
+        <div
+          className="rounded-lg px-6 py-8 text-center relative overflow-hidden"
+          style={{
+            background: 'var(--bg-secondary)',
+            border: '1px solid rgba(34,197,94,0.3)',
+          }}
+        >
+          {/* Glow */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: 'radial-gradient(ellipse at center, rgba(34,197,94,0.06) 0%, transparent 70%)',
+          }} />
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 animate-verify"
+            style={{ background: 'rgba(34,197,94,0.1)', border: '2px solid rgba(34,197,94,0.4)' }}
+          >
+            <CheckCircle size={28} style={{ color: '#22c55e' }} />
+          </div>
+          <div className="font-bold tracking-widest" style={{ fontSize: 22, color: '#22c55e', letterSpacing: '0.15em', fontFamily: 'ui-monospace, monospace' }}>
+            VERIFIED
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 8 }}>
+            PatchPilot verified the proposed fix against the reproduction scenario and regression suite.
+          </p>
+          <div className="flex items-center justify-center gap-6 mt-4">
+            {[
+              { label: 'Tests Passed', value: `${passedTests.length}/${tests.length}` },
+              { label: 'Files Changed', value: session.changedFiles.length },
+              { label: 'Fix Applied', value: session.fixApplied ? 'Yes' : 'No' },
+            ].map((m) => (
+              <div key={m.label} className="text-center">
+                <div style={{ fontSize: 18, fontWeight: 700, color: '#22c55e' }}>{m.value}</div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>{m.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-4">
         {/* Left column */}

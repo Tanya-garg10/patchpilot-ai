@@ -68,18 +68,20 @@ export default function WorkflowImpactPage() {
   ];
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
+    <div className="p-5 max-w-4xl mx-auto space-y-5 animate-fade-in">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" icon={<ArrowLeft size={14} />} onClick={() => router.push(`/sessions/${id}`)}>
+        <Button variant="ghost" size="sm" icon={<ArrowLeft size={12} />} onClick={() => router.push(`/sessions/${id}`)}>
           Back to Session
         </Button>
-      </div>
-
-      <div>
-        <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>Workflow Impact</h1>
-        <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
-          Session-derived metrics — not fabricated. Unmeasured values shown as "Not Measured".
-        </p>
+        <div>
+          <div className="label-mono" style={{ fontSize: 9, marginBottom: 2 }}>WORKFLOW IMPACT</div>
+          <h1 className="font-bold tracking-tight" style={{ fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Workflow Impact
+          </h1>
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>
+            Session-derived metrics — not fabricated. Unmeasured values shown as "Not Measured".
+          </p>
+        </div>
       </div>
 
       {/* Metrics */}

@@ -12,8 +12,11 @@ export function CodeViewer({ code, suspiciousLines = [] }: CodeViewerProps) {
   const lines = code.split('\n');
 
   return (
-    <div className="overflow-auto h-full">
-      <table className="w-full border-collapse" style={{ fontFamily: 'ui-monospace, "Cascadia Code", monospace', fontSize: 12 }}>
+    <div className="overflow-auto h-full" style={{ background: '#040609' }}>
+      <table
+        className="w-full border-collapse"
+        style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: 12 }}
+      >
         <tbody>
           {lines.map((line, i) => {
             const lineNum = i + 1;
@@ -21,11 +24,12 @@ export function CodeViewer({ code, suspiciousLines = [] }: CodeViewerProps) {
             return (
               <tr
                 key={i}
-                className={cn(
-                  'group',
-                  isSuspicious && 'bg-yellow-500/10'
-                )}
+                className={cn('group transition-colors')}
+                style={{
+                  background: isSuspicious ? 'rgba(234,179,8,0.08)' : undefined,
+                }}
               >
+                {/* Line number */}
                 <td
                   className="select-none pl-4 pr-3 text-right w-10"
                   style={{
@@ -35,25 +39,39 @@ export function CodeViewer({ code, suspiciousLines = [] }: CodeViewerProps) {
                     verticalAlign: 'top',
                     paddingTop: 2,
                     paddingBottom: 2,
+                    fontSize: 11,
                   }}
                 >
                   {lineNum}
                 </td>
+
+                {/* Suspicious indicator gutter */}
                 <td
-                  className="pl-4 pr-4 whitespace-pre"
+                  className="w-4 flex-shrink-0"
                   style={{
-                    color: isSuspicious ? '#fde68a' : 'var(--text-primary)',
+                    background: isSuspicious ? 'rgba(234,179,8,0.15)' : 'transparent',
+                    borderRight: isSuspicious ? '2px solid #eab308' : '2px solid transparent',
+                    width: 6,
+                    padding: 0,
+                  }}
+                />
+
+                {/* Code content */}
+                <td
+                  className="pl-4 pr-6 whitespace-pre group-hover:bg-white/[0.015]"
+                  style={{
+                    color: isSuspicious ? '#fde68a' : '#c9d5e8',
                     paddingTop: 2,
                     paddingBottom: 2,
                   }}
                 >
                   {isSuspicious && (
                     <span
-                      className="mr-2 text-xs"
-                      style={{ color: '#eab308' }}
-                      title="Suspicious line identified by analysis"
+                      className="mr-2"
+                      style={{ color: '#eab308', fontSize: 10 }}
+                      title="Suspicious line identified by AI analysis"
                     >
-                      ⚠
+                      ▶
                     </span>
                   )}
                   {line}

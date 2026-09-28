@@ -43,16 +43,19 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-4">
+    <div className="p-5 max-w-4xl mx-auto space-y-5 animate-fade-in">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>Projects</h1>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
-            {projects.length} project{projects.length !== 1 ? 's' : ''}
+          <div className="label-mono" style={{ marginBottom: 2 }}>PROJECTS</div>
+          <h1 className="font-bold tracking-tight" style={{ fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Projects
+          </h1>
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>
+            {projects.length} project{projects.length !== 1 ? 's' : ''} · code repositories
           </p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="secondary" size="sm" icon={<Play size={13} />} loading={demoRunning} onClick={handleRunDemo}>
+        <div className="flex gap-2">
+          <Button variant="secondary" size="sm" icon={<Play size={12} />} loading={demoRunning} onClick={handleRunDemo}>
             Load Demo
           </Button>
         </div>

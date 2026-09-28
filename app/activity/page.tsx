@@ -26,18 +26,18 @@ const EVENT_ICONS: Record<ActivityEventType, React.ReactNode> = {
 };
 
 const EVENT_COLORS: Record<ActivityEventType, string> = {
-  bug_report_created: '#3b82d4',
+  bug_report_created: '#3b82f6',
   analysis_started: '#8b5cf6',
-  root_cause_identified: '#06b6d4',
+  root_cause_identified: '#00d4ff',
   fix_generated: '#f97316',
   diff_reviewed: '#f97316',
   fix_applied: '#22c55e',
   tests_generated: '#8b5cf6',
   tests_executed: '#eab308',
   verification_completed: '#22c55e',
-  pr_summary_created: '#3b82d4',
-  session_created: '#8b97a8',
-  session_closed: '#8b97a8',
+  pr_summary_created: '#3b82f6',
+  session_created: '#7e93b0',
+  session_closed: '#7e93b0',
 };
 
 export default function ActivityPage() {
@@ -49,11 +49,14 @@ export default function ActivityPage() {
   }, []);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-4">
+    <div className="p-5 max-w-3xl mx-auto space-y-5 animate-fade-in">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>Activity</h1>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
+          <div className="label-mono" style={{ marginBottom: 2 }}>ACTIVITY</div>
+          <h1 className="font-bold tracking-tight" style={{ fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Activity
+          </h1>
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>
             Full timeline of PatchPilot events
           </p>
         </div>

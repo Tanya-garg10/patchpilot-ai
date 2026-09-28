@@ -155,23 +155,27 @@ export default function SessionDetailPage() {
     <div className="flex flex-col h-full">
       {/* Top Bar */}
       <div
-        className="flex items-center justify-between px-4 py-3 flex-shrink-0"
-        style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-secondary)' }}
+        className="flex items-center justify-between px-4 flex-shrink-0"
+        style={{ height: 44, borderBottom: '1px solid var(--border)', background: 'var(--bg-secondary)' }}
       >
-        <div className="flex items-center gap-3 min-w-0">
-          <Button variant="ghost" size="sm" icon={<ArrowLeft size={14} />} onClick={() => router.push('/sessions')}>
+        <div className="flex items-center gap-2 min-w-0">
+          <Button variant="ghost" size="sm" icon={<ArrowLeft size={12} />} onClick={() => router.push('/sessions')}>
             Sessions
           </Button>
-          <span style={{ color: 'var(--text-muted)' }}>/</span>
-          <span className="text-sm truncate font-medium" style={{ color: 'var(--text-primary)' }}>
+          <span style={{ color: 'var(--border-bright)' }}>/</span>
+          <span className="truncate font-medium" style={{ fontSize: 12.5, color: 'var(--text-primary)' }}>
             {session.title}
           </span>
-          <span className={`text-xs font-medium ${sessionStatusColor(session.status)}`}>
+          <span
+            className="rounded-full flex-shrink-0"
+            style={{ width: 5, height: 5, background: session.status === 'verified' ? 'var(--green)' : session.status === 'analyzing' ? '#3b82f6' : '#eab308' }}
+          />
+          <span className={`font-medium flex-shrink-0 ${sessionStatusColor(session.status)}`} style={{ fontSize: 11 }}>
             {sessionStatusLabel(session.status)}
           </span>
         </div>
         {/* Stage Nav */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           {STAGES.map((s, i) => {
             const isActive = s.id === stage;
             const isPast =
@@ -184,15 +188,20 @@ export default function SessionDetailPage() {
               <button
                 key={s.id}
                 onClick={() => setStage(s.id)}
-                className="flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors"
+                className="flex items-center transition-all"
                 style={{
-                  color: isActive ? 'var(--accent)' : isPast ? 'var(--text-secondary)' : 'var(--text-muted)',
-                  background: isActive ? 'var(--accent-glow)' : 'transparent',
+                  padding: '0 8px',
+                  height: 44,
+                  fontSize: 11,
                   fontWeight: isActive ? 600 : 400,
+                  color: isActive ? 'var(--cyan)' : isPast ? 'var(--text-secondary)' : 'var(--text-muted)',
+                  borderBottom: isActive ? '2px solid var(--cyan)' : '2px solid transparent',
+                  fontFamily: isActive ? 'ui-monospace, monospace' : undefined,
+                  letterSpacing: isActive ? '0.03em' : undefined,
                 }}
               >
-                {i > 0 && <ChevronRight size={10} style={{ opacity: 0.4 }} />}
-                {s.label}
+                {i > 0 && <ChevronRight size={9} style={{ opacity: 0.3, marginRight: 4 }} />}
+                {s.label.toUpperCase()}
               </button>
             );
           })}
@@ -203,14 +212,14 @@ export default function SessionDetailPage() {
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* LEFT — Bug Context */}
         <div
-          className="w-72 flex-shrink-0 flex flex-col overflow-y-auto"
+          className="w-64 flex-shrink-0 flex flex-col overflow-y-auto"
           style={{ borderRight: '1px solid var(--border)', background: 'var(--bg-secondary)' }}
         >
           <BugContextPanel session={session} project={project} stage={stage} />
         </div>
 
         {/* CENTER — Code Intelligence */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: '#05080e' }}>
           {showDiff && session.generatedFix ? (
             <DiffPanel fix={session.generatedFix} onBack={() => setShowDiff(false)} />
           ) : (
@@ -224,7 +233,7 @@ export default function SessionDetailPage() {
 
         {/* RIGHT — AI Debug Copilot */}
         <div
-          className="w-80 flex-shrink-0 flex flex-col overflow-y-auto"
+          className="w-72 flex-shrink-0 flex flex-col overflow-y-auto"
           style={{ borderLeft: '1px solid var(--border)', background: 'var(--bg-secondary)' }}
         >
           <AICopilotPanel
@@ -256,13 +265,15 @@ function BugContextPanel({ session, project, stage }: {
   stage: Stage;
 }) {
   return (
-    <div className="p-4 space-y-4">
-      <div>
-        <div className="text-xs font-medium uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
-          Bug Context
-        </div>
-        <div className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>{session.title}</div>
-        <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+    <div className="p-3 space-y-3">
+      {/* Panel header */}
+      <div
+        className="rounded-md p-3"
+        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}
+      >
+        <div className="label-mono mb-1.5" style={{ fontSize: 9 }}>BUG CONTEXT</div>
+        <div className="font-semibold leading-tight" style={{ fontSize: 12.5, color: 'var(--text-primary)' }}>{session.title}</div>
+        <div style={{ fontSize: 10.5, color: 'var(--text-muted)', marginTop: 3 }}>
           {formatRelative(session.createdAt)}
         </div>
       </div>
@@ -279,7 +290,7 @@ function BugContextPanel({ session, project, stage }: {
 
       {session.actualBehavior && (
         <Section title="Actual Behavior">
-          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)', color: '#ef4444' } as React.CSSProperties}>{session.actualBehavior}</p>
+          <p className="text-xs leading-relaxed" style={{ color: '#ef4444' }}>{session.actualBehavior}</p>
         </Section>
       )}
 
@@ -418,25 +429,24 @@ function AICopilotPanel({
   const { analysis, generatedFix, fixApplied } = session;
 
   return (
-    <div className="p-4 space-y-4">
-      <div className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-        AI Debug Copilot
-      </div>
-
-      {/* Status indicator */}
+    <div className="p-3 space-y-3">
+      {/* Copilot header */}
       <div
-        className="flex items-center gap-2 px-3 py-2 rounded-md text-xs"
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}
+        className="rounded-md p-3"
+        style={{ background: 'rgba(0,212,255,0.04)', border: '1px solid rgba(0,212,255,0.12)' }}
       >
-        <Zap size={12} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-        <span style={{ color: 'var(--text-secondary)' }}>
-          {analyzing ? 'Analyzing bug...' :
-           generatingFix ? 'Generating fix...' :
-           fixApplied ? 'Fix applied — ready for testing' :
-           analysis ? 'Analysis complete' :
-           'Ready to analyze'}
-        </span>
-        <span className="ml-auto tag tag-gray">Demo</span>
+        <div className="flex items-center gap-2">
+          <Zap size={11} style={{ color: 'var(--cyan)', flexShrink: 0 }} />
+          <span className="label-mono" style={{ fontSize: 9, color: 'var(--cyan)' }}>PATCHPILOT AI</span>
+          <span className="tag tag-violet ml-auto" style={{ fontSize: 9 }}>Demo</span>
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4 }}>
+          {analyzing ? 'Running root cause analysis...' :
+           generatingFix ? 'Generating targeted fix...' :
+           fixApplied ? '✓ Fix applied — ready for testing' :
+           analysis ? '✓ Analysis complete' :
+           'Ready to analyze bug'}
+        </div>
       </div>
 
       {/* Loading */}
@@ -629,7 +639,7 @@ function AICopilotPanel({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>{title}</div>
+      <div className="label-mono mb-1.5" style={{ fontSize: 9 }}>{title}</div>
       {children}
     </div>
   );
@@ -638,8 +648,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{label}</span>
-      <span className="text-xs mono" style={{ color: 'var(--text-secondary)' }}>{value}</span>
+      <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{label}</span>
+      <span className="mono" style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{value}</span>
     </div>
   );
 }
@@ -653,11 +663,11 @@ function CopilotCard({ title, icon, color, children }: {
   return (
     <div
       className="rounded-md p-3 space-y-2"
-      style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}
+      style={{ background: 'var(--bg-elevated)', border: `1px solid ${color}22`, borderLeft: `2px solid ${color}` }}
     >
       <div className="flex items-center gap-2" style={{ color }}>
         {icon}
-        <span className="text-xs font-semibold">{title}</span>
+        <span className="font-semibold" style={{ fontSize: 11 }}>{title}</span>
       </div>
       <div>{children}</div>
     </div>

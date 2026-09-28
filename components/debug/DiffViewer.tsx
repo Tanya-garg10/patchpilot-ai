@@ -15,41 +15,71 @@ export function DiffViewer({ diff }: DiffViewerProps) {
       className="rounded-md overflow-hidden mb-4"
       style={{ border: '1px solid var(--border)' }}
     >
+      {/* File header */}
       <div
         className="flex items-center justify-between px-4 py-2"
         style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)' }}
       >
-        <span className="text-xs font-medium mono" style={{ color: 'var(--text-secondary)' }}>
-          {diff.file}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            className="label-mono"
+            style={{ fontSize: 9 }}
+          >
+            PATCH
+          </span>
+          <span className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+            {diff.file}
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span style={{ fontSize: 10, color: '#ef4444' }}>
+            − {beforeLines.length} lines
+          </span>
+          <span style={{ fontSize: 10, color: '#22c55e' }}>
+            + {afterLines.length} lines
+          </span>
+        </div>
       </div>
 
+      {/* Explanation */}
       <div
-        className="text-xs px-4 py-2"
-        style={{ background: 'rgba(59,130,212,0.06)', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}
+        className="px-4 py-2"
+        style={{
+          background: 'rgba(0,212,255,0.04)',
+          borderBottom: '1px solid var(--border)',
+          borderLeft: '2px solid rgba(0,212,255,0.3)',
+          fontSize: 11,
+          color: 'var(--text-secondary)',
+        }}
       >
         {diff.explanation}
       </div>
 
-      <div className="grid grid-cols-2 divide-x" style={{ borderColor: 'var(--border)' }}>
+      {/* Side-by-side diff */}
+      <div className="grid grid-cols-2" style={{ borderTop: '1px solid var(--border)', minWidth: 0 }}>
         {/* Before */}
-        <div>
+        <div style={{ borderRight: '1px solid var(--border)' }}>
           <div
-            className="px-3 py-1.5 text-xs font-medium flex items-center gap-2"
-            style={{ background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid var(--border)', color: '#ef4444' }}
+            className="flex items-center gap-2 px-3 py-1.5"
+            style={{
+              background: 'rgba(239,68,68,0.06)',
+              borderBottom: '1px solid var(--border)',
+            }}
           >
-            <span>−</span> BEFORE
+            <span style={{ fontSize: 10, color: '#ef4444', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.04em' }}>
+              − BEFORE
+            </span>
           </div>
-          <div className="overflow-auto" style={{ background: '#0e1117' }}>
+          <div className="overflow-auto" style={{ background: '#040609', maxHeight: 320 }}>
             {beforeLines.map((line, i) => (
               <div
                 key={i}
-                className="flex"
+                className="flex hover:bg-white/[0.02]"
                 style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12 }}
               >
                 <span
-                  className="select-none w-8 text-right pr-3 flex-shrink-0"
-                  style={{ color: 'var(--text-muted)', paddingTop: 2, paddingBottom: 2 }}
+                  className="select-none w-8 text-right pr-3 flex-shrink-0 pt-0.5 pb-0.5"
+                  style={{ color: 'var(--text-muted)', fontSize: 10 }}
                 >
                   {i + 1}
                 </span>
@@ -63,24 +93,30 @@ export function DiffViewer({ diff }: DiffViewerProps) {
             ))}
           </div>
         </div>
+
         {/* After */}
         <div>
           <div
-            className="px-3 py-1.5 text-xs font-medium flex items-center gap-2"
-            style={{ background: 'rgba(34,197,94,0.08)', borderBottom: '1px solid var(--border)', color: '#22c55e' }}
+            className="flex items-center gap-2 px-3 py-1.5"
+            style={{
+              background: 'rgba(34,197,94,0.06)',
+              borderBottom: '1px solid var(--border)',
+            }}
           >
-            <span>+</span> AFTER
+            <span style={{ fontSize: 10, color: '#22c55e', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.04em' }}>
+              + AFTER
+            </span>
           </div>
-          <div className="overflow-auto" style={{ background: '#0e1117' }}>
+          <div className="overflow-auto" style={{ background: '#040609', maxHeight: 320 }}>
             {afterLines.map((line, i) => (
               <div
                 key={i}
-                className="flex"
+                className="flex hover:bg-white/[0.02]"
                 style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12 }}
               >
                 <span
-                  className="select-none w-8 text-right pr-3 flex-shrink-0"
-                  style={{ color: 'var(--text-muted)', paddingTop: 2, paddingBottom: 2 }}
+                  className="select-none w-8 text-right pr-3 flex-shrink-0 pt-0.5 pb-0.5"
+                  style={{ color: 'var(--text-muted)', fontSize: 10 }}
                 >
                   {i + 1}
                 </span>
