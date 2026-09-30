@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, HelpCircle, Terminal } from 'lucide-react';
+import { Bell, HelpCircle, Command } from 'lucide-react';
 
 export function TopHeader() {
   return (
@@ -12,7 +12,7 @@ export function TopHeader() {
         background: 'var(--bg-secondary)',
       }}
     >
-      {/* Left — env label */}
+      {/* Left — env label + product statement */}
       <div className="flex items-center gap-3">
         <div
           className="flex items-center gap-2 px-2.5 py-1 rounded"
@@ -26,16 +26,30 @@ export function TopHeader() {
             style={{ width: 5, height: 5, background: 'var(--green)', display: 'inline-block', flexShrink: 0 }}
           />
           <span style={{ fontSize: 10, color: 'var(--cyan)', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.07em' }}>
-            DEMO ENVIRONMENT
+            DEMO MODE
           </span>
         </div>
         <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-          ShopStack cart bug · ready to debug
+          Autonomous AI Engineering Agent · From Issue to Verified Fix
         </span>
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        {/* Ctrl+K hint */}
+        <div
+          className="flex items-center gap-1.5 px-2 py-1 rounded cursor-pointer hover:bg-white/[0.04] transition-colors"
+          style={{ border: '1px solid var(--border)' }}
+          title="Open command palette (Ctrl+K)"
+          onClick={() => {
+            // Dispatch a synthetic Ctrl+K to open the palette
+            window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+          }}
+        >
+          <Command size={10} style={{ color: 'var(--text-muted)' }} />
+          <span style={{ fontSize: 9.5, color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace' }}>K</span>
+        </div>
+
         <button
           className="flex items-center justify-center w-7 h-7 rounded transition-colors hover:bg-white/[0.05]"
           style={{ color: 'var(--text-muted)' }}
@@ -51,7 +65,7 @@ export function TopHeader() {
           <Bell size={14} />
         </button>
 
-        <div className="mx-2" style={{ width: 1, height: 18, background: 'var(--border)' }} />
+        <div className="mx-1" style={{ width: 1, height: 18, background: 'var(--border)' }} />
 
         {/* Avatar */}
         <div
@@ -67,7 +81,7 @@ export function TopHeader() {
           }}
           title="Developer"
         >
-          T
+          D
         </div>
       </div>
     </header>

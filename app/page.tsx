@@ -25,12 +25,12 @@ import { DebugSession, ActivityEvent } from '@/lib/types';
 import { runDemo } from '@/lib/run-demo';
 
 const PIPELINE_STAGES = [
-  { id: 1, label: 'REPORT',    color: '#3b82f6',  desc: 'Bug captured' },
-  { id: 2, label: 'REPRODUCE', color: '#8b5cf6',  desc: 'Issue reproduced' },
-  { id: 3, label: 'ANALYZE',   color: '#00d4ff',  desc: 'Root cause found' },
-  { id: 4, label: 'FIX',       color: '#f97316',  desc: 'Patch generated' },
-  { id: 5, label: 'TEST',      color: '#eab308',  desc: 'Tests executed' },
-  { id: 6, label: 'VERIFIED',  color: '#22c55e',  desc: 'Fix confirmed' },
+  { id: 1, label: 'ISSUE',       color: '#3b82f6',  desc: 'Bug reported' },
+  { id: 2, label: 'INVESTIGATE', color: '#8b5cf6',  desc: 'Investigator Agent' },
+  { id: 3, label: 'ROOT CAUSE',  color: '#00d4ff',  desc: 'Evidence + confidence' },
+  { id: 4, label: 'FIX',         color: '#f97316',  desc: 'Human approval' },
+  { id: 5, label: 'TEST',        color: '#eab308',  desc: 'Regression suite' },
+  { id: 6, label: 'VERIFIED',    color: '#22c55e',  desc: 'Verification Agent' },
 ];
 
 const ACTIVITY_ICONS: Record<string, React.ReactNode> = {
@@ -121,16 +121,16 @@ export default function DashboardPage() {
               className="label-mono mb-2"
               style={{ color: 'var(--cyan)', letterSpacing: '0.1em' }}
             >
-              DEBUG COMMAND CENTER
+              ENGINEERING COMMAND CENTER
             </div>
             <h1
               className="font-bold tracking-tight"
               style={{ fontSize: 26, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.03em' }}
             >
-              Good evening, Tanya.
+              PatchPilot
             </h1>
             <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-              Your debugging command center — from bug report to verified fix.
+              Autonomous AI engineering agent — from issue to verified fix.
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -187,15 +187,15 @@ export default function DashboardPage() {
       {/* ── Metrics ───────────────────────────────────────────── */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: 'Active Sessions',     value: activeCount,   icon: <Bug size={14} />,          color: '#3b82f6',  note: 'in progress' },
-          { label: 'Issues Resolved',     value: resolvedCount, icon: <CheckCircle size={14} />,   color: '#22c55e',  note: 'verified' },
-          { label: 'Tests Generated',     value: testCount,     icon: <FlaskConical size={14} />,  color: '#8b5cf6',  note: 'across sessions' },
+          { label: 'Active Issues',       value: activeCount,   icon: <Bug size={14} />,          color: '#3b82f6',  note: 'in progress' },
+          { label: 'AI Investigations',   value: resolvedCount + activeCount, icon: <CheckCircle size={14} />, color: '#22c55e',  note: 'completed' },
+          { label: 'Fixes Verified',      value: resolvedCount, icon: <FlaskConical size={14} />,  color: '#8b5cf6',  note: 'autonomous fixes' },
           {
-            label: 'Verification Rate',
-            value: resolvedCount > 0 ? `${Math.round((resolvedCount / sessions.length) * 100)}%` : '—',
+            label: 'Regression Tests',
+            value: testCount,
             icon: <Shield size={14} />,
             color: '#00d4ff',
-            note: sessions.length > 0 ? 'of sessions verified' : 'run a session first',
+            note: sessions.length > 0 ? 'generated' : 'run demo first',
           },
         ].map((m) => (
           <div
@@ -238,8 +238,8 @@ export default function DashboardPage() {
         <div className="col-span-2">
           <Card>
             <CardHeader
-              title="Recent Debug Sessions"
-              subtitle={`${recentSessions.length} sessions`}
+              title="Recent Issues"
+              subtitle={`${recentSessions.length} issues`}
               icon={<Bug size={13} />}
               actions={
                 <Button variant="ghost" size="sm" onClick={() => router.push('/sessions')}>
@@ -252,14 +252,14 @@ export default function DashboardPage() {
               <div className="py-12 text-center">
                 <Bug size={24} style={{ color: 'var(--text-muted)', margin: '0 auto 12px' }} />
                 <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                  No sessions yet — load the demo or start a debug session.
+                  No issues yet — load the demo or create a new issue.
                 </p>
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <Button variant="secondary" size="sm" loading={demoRunning} onClick={handleRunDemo}>
                     Load ShopStack Demo
                   </Button>
                   <Button variant="primary" size="sm" onClick={() => router.push('/sessions/new')}>
-                    New Session
+                    New Issue
                   </Button>
                 </div>
               </div>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
                 icon={<Plus size={12} />}
                 onClick={() => router.push('/sessions/new')}
               >
-                New Debug Session
+                + New Issue
               </Button>
               <Button
                 variant="secondary"

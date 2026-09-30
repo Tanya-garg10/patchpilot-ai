@@ -11,26 +11,32 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Shield,
   Cpu,
+  Users,
+  BarChart2,
+  Inbox,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
-  { href: '/',          label: 'Overview',       icon: LayoutDashboard, group: 'main' },
-  { href: '/sessions',  label: 'Debug Sessions',  icon: Bug,             group: 'main' },
-  { href: '/projects',  label: 'Projects',        icon: FolderOpen,      group: 'main' },
-  { href: '/test-lab',  label: 'Test Lab',         icon: FlaskConical,    group: 'main' },
-  { href: '/activity',  label: 'Activity',         icon: Activity,        group: 'main' },
-  { href: '/settings',  label: 'Settings',         icon: Settings,        group: 'bottom' },
+  { href: '/',            label: 'Overview',       icon: LayoutDashboard, group: 'main' },
+  { href: '/issues',      label: 'Issues',          icon: Inbox,           group: 'main' },
+  { href: '/sessions',    label: 'Debug Sessions',  icon: Bug,             group: 'main' },
+  { href: '/projects',    label: 'Projects',        icon: FolderOpen,      group: 'main' },
+  { href: '/agents',      label: 'Agents',          icon: Users,           group: 'main' },
+  { href: '/test-lab',    label: 'Test Lab',        icon: FlaskConical,    group: 'main' },
+  { href: '/activity',    label: 'Activity',        icon: Activity,        group: 'main' },
+  { href: '/analytics',   label: 'Analytics',       icon: BarChart2,       group: 'main' },
+  { href: '/settings',    label: 'Settings',        icon: Settings,        group: 'bottom' },
 ];
 
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  aiMode?: 'evorozen' | 'demo';
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, aiMode = 'demo' }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -82,7 +88,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               className="text-xs leading-tight"
               style={{ color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace', fontSize: 9, letterSpacing: '0.05em' }}
             >
-              DEBUG ENGINE
+              AUTONOMOUS AI AGENT
             </div>
           </div>
         )}
@@ -90,6 +96,13 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* ── Navigation ────────────────────────────────── */}
       <nav className="flex-1 py-2 px-1.5 flex flex-col gap-0.5 overflow-y-auto">
+        {/* Section label */}
+        {!collapsed && (
+          <div className="px-2 mb-1" style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
+            WORKSPACE
+          </div>
+        )}
+
         {NAV_ITEMS.filter(i => i.group === 'main').map(({ href, label, icon: Icon }) => {
           const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
           return (
@@ -156,21 +169,53 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* ── AI Engine Status ───────────────────────────── */}
       {!collapsed && (
         <div
-          className="mx-2 mb-2 px-3 py-2 rounded-md"
-          style={{ background: 'rgba(0,212,255,0.04)', border: '1px solid rgba(0,212,255,0.12)' }}
+          className="mx-2 mb-2 px-3 py-2.5 rounded-md"
+          style={{
+            background: aiMode === 'evorozen'
+              ? 'rgba(124,58,237,0.06)'
+              : 'rgba(0,212,255,0.04)',
+            border: aiMode === 'evorozen'
+              ? '1px solid rgba(124,58,237,0.2)'
+              : '1px solid rgba(0,212,255,0.12)',
+          }}
         >
           <div className="flex items-center gap-2">
-            <Cpu size={11} style={{ color: 'var(--cyan)', flexShrink: 0 }} />
-            <span style={{ fontSize: 10, color: 'var(--cyan)', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.06em' }}>
+            <Cpu
+              size={11}
+              style={{ color: aiMode === 'evorozen' ? '#a78bfa' : 'var(--cyan)', flexShrink: 0 }}
+            />
+            <span
+              style={{
+                fontSize: 9.5,
+                color: aiMode === 'evorozen' ? '#a78bfa' : 'var(--cyan)',
+                fontFamily: 'ui-monospace, monospace',
+                letterSpacing: '0.06em',
+              }}
+            >
               AI ENGINE
             </span>
             <span
               className="animate-pulse-slow rounded-full ml-auto"
-              style={{ width: 5, height: 5, background: 'var(--green)', flexShrink: 0 }}
+              style={{
+                width: 5,
+                height: 5,
+                background: aiMode === 'evorozen' ? '#22c55e' : '#eab308',
+                flexShrink: 0,
+              }}
             />
           </div>
-          <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace', marginTop: 2, letterSpacing: '0.04em' }}>
-            ONLINE · DEMO MODE
+          <div
+            style={{
+              fontSize: 9,
+              color: 'var(--text-muted)',
+              fontFamily: 'ui-monospace, monospace',
+              marginTop: 2,
+              letterSpacing: '0.04em',
+            }}
+          >
+            {aiMode === 'evorozen'
+              ? 'EVOROZEN NEURAL PULSE · CONNECTED'
+              : 'DEMO PROVIDER · SIMULATION'}
           </div>
         </div>
       )}

@@ -3,9 +3,9 @@
 // ============================================================
 // PatchPilot — runDemo()
 // Seeds the ShopStack demo session into localStorage.
+// BUG-1042: Cart quantity resets after navigating back to cart.
 // ============================================================
 
-import { v4 as uuid } from 'uuid';
 import {
   saveProject,
   getProjects,
@@ -47,14 +47,30 @@ export async function runDemo(): Promise<string> {
     sessionId: DEMO_BUG_SESSION_ID,
     projectId: SHOPSTACK_PROJECT_ID,
     type: 'bug_report_created',
-    description: 'ShopStack demo bug report created: "Cart total becomes negative after removing the last item"',
-    metadata: { demo: true },
+    description: 'ShopStack BUG-1042: "Cart quantity resets after navigating back to the cart"',
+    metadata: { demo: true, bugId: 'BUG-1042' },
+  });
+
+  addActivity({
+    sessionId: DEMO_BUG_SESSION_ID,
+    projectId: SHOPSTACK_PROJECT_ID,
+    type: 'analysis_started',
+    description: 'Investigator Agent: scanning repository for root cause evidence',
+    metadata: { demo: true, agent: 'investigator' },
   });
 
   // Seed suggested test cases
   for (const tc of DEMO_TEST_CASES) {
     createTestCase(DEMO_BUG_SESSION_ID, tc.name, tc.description, tc.code);
   }
+
+  addActivity({
+    sessionId: DEMO_BUG_SESSION_ID,
+    projectId: SHOPSTACK_PROJECT_ID,
+    type: 'tests_generated',
+    description: `Test Agent: ${DEMO_TEST_CASES.length} regression tests generated for BUG-1042`,
+    metadata: { demo: true, agent: 'test', count: DEMO_TEST_CASES.length },
+  });
 
   return DEMO_BUG_SESSION_ID;
 }
